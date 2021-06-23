@@ -1,3 +1,5 @@
-.idea
+.idea/
 .DS_store
-__pycache__
+__pycache__/
+venv/
+db.sqlite3
