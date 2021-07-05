@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lead</title>
+</head>
+<body>
+    <a href="{% url 'leads:lead-list' %}">Go back to leads</a>
+    <hr>
+    <h1>This is the details of {{ lead.first_name }} {{ lead.last_name }}</h1>
+    <p>Age: {{ lead.age }}</p>
+    <p>Agent: {{ lead.agent }}</p>
+    <hr>
+    <a href="{% url 'leads:lead-update' lead.pk %}">Update</a>
+    <a href="{% url 'leads:lead-delete' lead.pk %}">Delete</a>
+</body>
+</html>
