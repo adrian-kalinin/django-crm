@@ -6,17 +6,13 @@
         {% block title %}
         {% endblock %}
     </title>
-    <style>
-        .lead {
-            padding: 10px 6px;
-            margin: 10px;
-            background-color: #f6f6f6;
-            width: 100%;
-        }
-    </style>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="max-w-7xl mx-auto">
+        {% include 'navbar.html' %}
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>
