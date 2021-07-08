@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Sigh Up
@@ -6,12 +7,17 @@
 
 {% block content %}
 
-    <form method="post">
-        {% csrf_token %}
+    <div class="max-w-lg mx-auto">
+        <form method="post" class="mt-5">
+            {% csrf_token %}
 
-        {{ form.as_p }}
+            {{ form|crispy }}
 
-        <button type="submit">Sign Up</button>
-    </form>
+            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-600 border-0 py-2 px-8 rounded-md mt-2">Sign Up</button>
+        </form>
+        <div  class="mt-5 py-3 border-t border-gray-200">
+            <a href="{% url 'login' %}" class="hover:text-blue-500 ">Already have an account?</a>
+        </div>
+    </div>
 
 {% endblock %}

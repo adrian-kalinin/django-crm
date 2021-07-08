@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Update Agent
@@ -22,15 +23,15 @@
                     </p>
                     <form method="post">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Submit</button>
+                        {{ form|crispy }}
+                        <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-600 border-0 py-2 px-8 rounded-md mt-2">Submit</button>
                     </form>
-                    <div class="flex justify-end">
-                        <div class="text-white bg-red-500 border-0 py-2 px-6 mt-2 focus:outline-none hover:bg-red-600 rounded">
-                            <a href="{% url 'agents:agent-delete' agent.pk %}">
+                    <div class="mt-5 py-3 border-t border-gray-200">
+                        <a href="{% url 'agents:agent-delete' agent.pk %}">
+                            <div class="text-white text-center bg-red-500 hover:bg-red-600 rounded-md border-0 py-2 px-8 mt-2">
                                 Delete
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">

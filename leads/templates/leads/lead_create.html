@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Create Lead
 {% endblock %}
 
 {% block content %}
-    <h1>Create a new lead</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+
+    <div class="max-w-lg mx-auto">
+        <h1 class="text-4xl text-gray-800 my-5">Create a new lead</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="w-full text-white bg-blue-500 hover:bg-blue-600 border-0 py-2 px-8 rounded-md mt-2">Submit</button>
+        </form>
+        <div class="mt-5 py-3 border-t border-gray-200">
+            <a href="{% url 'leads:lead-list' %}" class="hover:text-blue-500">Go back to leads</a>
+        </div>
+    </div>
+
 {% endblock %}
