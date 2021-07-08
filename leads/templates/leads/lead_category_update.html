@@ -15,8 +15,8 @@
                     </h1>
                     <div class="flex mb-4">
                         <a href="{% url 'leads:lead-detail' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Overview</a>
-                        <a href="{% url 'leads:lead-category-update' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Status</a>
-                        <a href="{% url 'leads:lead-update' lead.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Edit</a>
+                        <a href="{% url 'leads:lead-category-update' lead.pk %}" class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Status</a>
+                        <a href="{% url 'leads:lead-update' lead.pk %}" class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Edit</a>
                     </div>
                     <p class="leading-relaxed mb-4">
                         Here are some details about the lead.
@@ -26,13 +26,6 @@
                         {{ form.as_p }}
                         <button type="submit">Submit</button>
                     </form>
-                    <div class="flex justify-end">
-                        <div class="text-white bg-red-500 border-0 py-2 px-6 mt-2 focus:outline-none hover:bg-red-600 rounded">
-                            <a href="{% url 'leads:lead-delete' lead.pk %}">
-                                Delete
-                            </a>
-                        </div>
-                    </div>
                 </div>
                 <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="https://dummyimage.com/400x400">
             </div>
