@@ -1,12 +1,16 @@
 from django.shortcuts import reverse
 from django.views import generic
 from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
 import random
 
 from leads.models import Agent
 
 from .mixins import OrganiserAndLoginRequiredMixin
 from .forms import AgentModelForm
+
+
+User = get_user_model()
 
 
 class AgentListView(OrganiserAndLoginRequiredMixin, generic.ListView):
@@ -48,6 +52,7 @@ class AgentCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
 
 class AgentDetailView(OrganiserAndLoginRequiredMixin, generic.DetailView):
     template_name = 'agents/agent_detail.html'
+    context_object_name = 'agent'
 
     def get_queryset(self):
         return Agent.objects.filter(organisation=self.request.user.userprofile)
@@ -56,12 +61,13 @@ class AgentDetailView(OrganiserAndLoginRequiredMixin, generic.DetailView):
 class AgentUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
+    context_object_name = 'agent'
 
     def get_queryset(self):
-        return Agent.objects.filter(organisation=self.request.user.userprofile)
+        return User.objects.all()
 
     def get_success_url(self):
-        return reverse('agents:agent-list')
+        return reverse('agents:agent-detail', kwargs={'pk': self.kwargs.get('pk')})
 
 
 class AgentDeleteView(OrganiserAndLoginRequiredMixin, generic.DeleteView):

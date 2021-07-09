@@ -62,6 +62,19 @@ class LeadCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
     template_name = 'leads/lead_create.html'
     form_class = LeadModelForm
 
+    def form_valid(self, form):
+        lead = form.save(commit=False)
+        user = self.request.user
+
+        if user.is_organiser:
+            lead.organisation = user.userprofile
+        else:
+            lead.organisation = user.agent.organisation
+
+        lead.save()
+
+        return super(LeadCreateView, self).form_valid(form)
+
     def get_success_url(self):
         return reverse('leads:lead-list')
 
