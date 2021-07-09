@@ -7,39 +7,45 @@
 {% block content %}
 
     <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-col text-center w-full mb-20">
+        <div class="container px-5 py-12 mx-auto">
+            <div class="flex flex-col text-center w-full mb-10">
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">{{ category.name }}</h1>
                 <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
                     These are the leads under this category
                 </p>
             </div>
-            <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                <table class="table-auto w-full text-left whitespace-no-wrap">
-                    <thead>
-                    <tr>
-                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
-                            First name
-                        </th>
-                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                            Last name
-                        </th>
-                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                            Age
-                        </th>
-                        <th class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for lead in category.leads.all %}
+            <div class="align-middle inline-block min-w-full">
+                <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg">
+                    <table class="table-auto w-full text-left whitespace-no-wrap">
+                        <thead>
                         <tr>
-                            <td class="px-4 py-3"><a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.first_name }}</a></td>
-                            <td class="px-4 py-3"><a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.last_name }}</a></td>
-                            <td class="px-4 py-3"><a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.age }}</a></td>
+                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">First name</th>
+                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Last name</th>
+                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Email</th>
+                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Phone Number</th>
+                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Agent</th>
+                            {% if request.user.is_organiser %}
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100"></th>
+                            {% endif %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for lead in category.leads.all %}
+                            <tr>
+                                <td class="px-4 py-3">{{ lead.first_name }}</td>
+                                <td class="px-4 py-3">{{ lead.last_name }}</td>
+                                <td class="px-4 py-3">{{ lead.email }}</td>
+                                <td class="px-4 py-3">{{ lead.phone_number }}</td>
+                                <td class="px-4 py-3">{{ lead.agent }}</td>
+                                {% if request.user.is_organiser %}
+                                    <td class="px-4 py-3"><a href="{% url 'leads:lead-detail' lead.pk %}" class="text-blue-500 hover:text-blue-600">View</a></td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>

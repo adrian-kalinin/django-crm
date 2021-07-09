@@ -61,10 +61,20 @@ class AgentDetailView(OrganiserAndLoginRequiredMixin, generic.DetailView):
 class AgentUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
     template_name = 'agents/agent_update.html'
     form_class = AgentModelForm
-    context_object_name = 'agent'
+    context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        obj = super(AgentUpdateView, self).get_object(queryset)
+        return obj.user
+
+    def get_context_data(self, **kwargs):
+        context = super(AgentUpdateView, self).get_context_data(**kwargs)
+        agent = Agent.objects.get(user=self.request.user)
+        context.update({'agent': agent})
+        return context
 
     def get_queryset(self):
-        return User.objects.all()
+        return Agent.objects.filter(organisation=self.request.user.userprofile)
 
     def get_success_url(self):
         return reverse('agents:agent-detail', kwargs={'pk': self.kwargs.get('pk')})
