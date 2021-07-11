@@ -194,7 +194,7 @@ class CategoryCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
 
 
 class CategoryUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
-    template_name = ''
+    template_name = 'leads/category_update.html'
     form_class = CategoryModelForm
 
     def get_queryset(self):
