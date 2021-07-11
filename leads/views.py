@@ -161,7 +161,7 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
-    template_name = 'leads/lead_category_update.html'
+    template_name = 'leads/category_update.html'
     form_class = LeadCategoryUpdateForm
 
     def get_queryset(self):
@@ -221,4 +221,4 @@ class CategoryDeleteView(OrganiserAndLoginRequiredMixin, generic.DeleteView):
             return Category.objects.filter(organisation=user.agent.organisation)
 
     def get_success_url(self):
-        return reverse('leads:lead-list')
+        return reverse('leads:category-list')
