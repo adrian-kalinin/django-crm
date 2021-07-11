@@ -7,7 +7,8 @@ from agents.mixins import OrganiserAndLoginRequiredMixin
 from .models import Lead, Category
 from .forms import (
     LeadModelForm, CustomUserCreationForm,
-    AssignAgentForm, LeadCategoryUpdateForm
+    AssignAgentForm, LeadCategoryUpdateForm,
+    CategoryModelForm
 )
 
 
@@ -176,3 +177,48 @@ class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse('leads:lead-detail', kwargs={'pk': self.get_object().pk})
+
+
+class CategoryCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
+    template_name = 'leads/category_create.html'
+    form_class = CategoryModelForm
+    
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organisation = self.request.user.userprofile
+        category.save()
+        return super(CategoryCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('leads:category-list')
+
+
+class CategoryUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
+    template_name = ''
+    form_class = CategoryModelForm
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_organiser:
+            return Category.objects.filter(organisation=user.userprofile)
+        else:
+            return Category.objects.filter(organisation=user.agent.organisation)
+
+    def get_success_url(self):
+        return reverse('leads:category-list')
+
+
+class CategoryDeleteView(OrganiserAndLoginRequiredMixin, generic.DeleteView):
+    template_name = 'leads/lead_delete.html'
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_organiser:
+            return Category.objects.filter(organisation=user.userprofile)
+        else:
+            return Category.objects.filter(organisation=user.agent.organisation)
+
+    def get_success_url(self):
+        return reverse('leads:lead-list')
