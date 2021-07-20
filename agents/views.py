@@ -69,12 +69,12 @@ class AgentUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(AgentUpdateView, self).get_context_data(**kwargs)
-        agent = Agent.objects.get(user=self.request.user)
-        context.update({'agent': agent})
+        context.update({'pk': self.kwargs.get('pk')})
         return context
 
     def get_queryset(self):
-        return Agent.objects.filter(organisation=self.request.user.userprofile)
+        user = self.request.user
+        return Agent.objects.filter(organisation=user.userprofile)
 
     def get_success_url(self):
         return reverse('agents:agent-detail', kwargs={'pk': self.kwargs.get('pk')})
@@ -82,6 +82,10 @@ class AgentUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
 
 class AgentDeleteView(OrganiserAndLoginRequiredMixin, generic.DeleteView):
     template_name = 'agents/agent_delete.html'
+
+    def get_object(self, queryset=None):
+        obj = super(AgentDeleteView, self).get_object(queryset)
+        return obj.user
 
     def get_queryset(self):
         return Agent.objects.filter(organisation=self.request.user.userprofile)

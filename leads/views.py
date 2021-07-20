@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from agents.mixins import OrganiserAndLoginRequiredMixin
 
-from .models import Lead, Category
+from .models import Lead, Category, Agent
 from .forms import (
     LeadModelForm, CustomUserCreationForm,
     AssignAgentForm, LeadCategoryUpdateForm,
@@ -83,6 +83,18 @@ class LeadCreateView(OrganiserAndLoginRequiredMixin, generic.CreateView):
 class LeadUpdateView(OrganiserAndLoginRequiredMixin, generic.UpdateView):
     template_name = 'leads/lead_update.html'
     form_class = LeadModelForm
+
+    def get_form(self, form_class=None):
+        form = super(LeadUpdateView, self).get_form(form_class)
+        user = self.request.user
+
+        if self.request.user.is_organiser:
+            queryset = Agent.objects.filter(organisation=user.userprofile)
+        else:
+            queryset = Agent.objects.filter(organisation=user.agent.organisation)
+
+        form.fields['agent'].queryset = queryset
+        return form
 
     def get_queryset(self):
         return Lead.objects.filter(organisation=self.request.user.userprofile)
@@ -163,6 +175,18 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
 class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = 'leads/lead_category_update.html'
     form_class = LeadCategoryUpdateForm
+
+    def get_form(self, form_class=None):
+        form = super(LeadCategoryUpdateView, self).get_form(form_class)
+        user = self.request.user
+
+        if self.request.user.is_organiser:
+            queryset = Category.objects.filter(organisation=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organisation=user.agent.organisation)
+
+        form.fields['category'].queryset = queryset
+        return form
 
     def get_queryset(self):
         user = self.request.user

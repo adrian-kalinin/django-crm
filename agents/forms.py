@@ -6,6 +6,8 @@ User = get_user_model()
 
 
 class AgentModelForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
     class Meta:
         model = User
         fields = (
